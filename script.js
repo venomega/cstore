@@ -1,5 +1,3 @@
-const WHATSAPP_NUMBER = '50212345678';
-
 const products = [
   {
     id: 1,
@@ -148,7 +146,7 @@ function getProductSVG(product) {
 }
 
 function fmt(n) {
-  return '$' + n.toLocaleString('es-CO');
+  return CONFIG.currency.symbol + n.toLocaleString(CONFIG.currency.locale);
 }
 
 function renderProducts() {
@@ -163,7 +161,7 @@ function renderProducts() {
         <h3>${p.name}</h3>
         <p class="desc">${p.desc}</p>
         <div class="product-footer">
-          <div class="price"><span>COP</span>${fmt(p.price)}</div>
+          <div class="price"><span>${CONFIG.currency.code}</span>${fmt(p.price)}</div>
           <button class="add-btn" onclick="addToCart(${p.id})" title="Agregar al carrito">+</button>
         </div>
       </div>
@@ -258,7 +256,7 @@ function updateWhatsAppLink() {
   btn.style.pointerEvents = 'auto';
   btn.style.opacity = '1';
 
-  let msg = '¡Hola! Quiero hacer un pedido de *La Madeja* 🧶\n\n';
+  let msg = `¡Hola! Quiero hacer un pedido de *${CONFIG.store.name}* 🧶\n\n`;
   msg += '*📋 Mi pedido:*\n';
   cart.forEach(item => {
     msg += `• ${item.name} x${item.qty} — ${fmt(item.price * item.qty)}\n`;
@@ -267,7 +265,7 @@ function updateWhatsAppLink() {
   msg += '\n¿Podría confirmarme disponibilidad y forma de pago? ¡Gracias!';
 
   const encoded = encodeURIComponent(msg);
-  btn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+  btn.href = `https://wa.me/${CONFIG.whatsapp.number}?text=${encoded}`;
 }
 
 function openCart() {
@@ -300,5 +298,6 @@ function scrollToProducts() {
   document.getElementById('productos').scrollIntoView({ behavior: 'smooth' });
 }
 
+CONFIG.applyTheme();
 renderProducts();
 updateCartUI();

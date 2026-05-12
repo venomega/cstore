@@ -6,6 +6,7 @@
 <title>La Madeja — Contacto</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<script src="config.js"></script>
 <style>
   .contact-section {
     max-width: 800px;
@@ -200,28 +201,28 @@
         <span class="icon">📧</span>
         <div>
           <h3>Email</h3>
-          <a href="mailto:hola@lamadeja.com">hola@lamadeja.com</a>
+          <a id="contactEmail" href="mailto:hola@lamadeja.com">hola@lamadeja.com</a>
         </div>
       </div>
       <div class="contact-item">
         <span class="icon">📱</span>
         <div>
           <h3>WhatsApp</h3>
-          <a href="https://wa.me/50212345678" target="_blank">+502 1234 5678</a>
+          <a id="contactWhatsapp" href="https://wa.me/50212345678" target="_blank">+502 1234 5678</a>
         </div>
       </div>
       <div class="contact-item">
         <span class="icon">📍</span>
         <div>
           <h3>Ubicación</h3>
-          <p>Ciudad de Guatemala<br>Guatemala</p>
+          <p id="contactLocation">Ciudad de Guatemala, Guatemala</p>
         </div>
       </div>
       <div class="contact-item">
         <span class="icon">🕐</span>
         <div>
           <h3>Horario</h3>
-          <p>Lun — Vie: 9:00 – 18:00<br>Sáb: 10:00 – 14:00</p>
+          <p id="contactHours">Lun — Vie: 9:00 – 18:00<br>Sáb: 10:00 – 14:00</p>
         </div>
       </div>
 
@@ -257,9 +258,24 @@
 </section>
 
 <footer>
-  <p><strong>La Madeja</strong> — Tejidos Artesanales</p>
+  <p><strong>La Madeja</strong> — <span id="footerTagline">Tejidos Artesanales</span></p>
   <p style="margin-top:8px">Todos los productos son elaborados a mano con materiales de calidad 🧶</p>
 </footer>
 
+<script>
+  CONFIG.applyTheme();
+
+  document.getElementById('contactEmail').textContent = CONFIG.store.email;
+  document.getElementById('contactEmail').href = 'mailto:' + CONFIG.store.email;
+
+  const wa = CONFIG.whatsapp.number;
+  document.getElementById('contactWhatsapp').textContent = '+' + wa.replace(/(\d{3})(\d{4})(\d{4})/, '$1 $2 $3');
+  document.getElementById('contactWhatsapp').href = 'https://wa.me/' + wa;
+
+  document.getElementById('contactLocation').textContent = CONFIG.store.location;
+  document.getElementById('contactHours').innerHTML = CONFIG.store.hours.weekdays + '<br>' + 'Sáb: ' + CONFIG.store.hours.saturday;
+
+  document.getElementById('footerTagline').textContent = CONFIG.store.tagline;
+</script>
 </body>
 </html>

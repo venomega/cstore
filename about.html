@@ -6,6 +6,7 @@
 <title>La Madeja — Sobre Nosotros</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<script src="config.js"></script>
 <style>
   .about-section {
     max-width: 800px;
@@ -148,9 +149,13 @@
 </section>
 
 <footer>
-  <p><strong>La Madeja</strong> — Tejidos Artesanales</p>
+  <p><strong>La Madeja</strong> — <span id="footerTagline">Tejidos Artesanales</span></p>
   <p style="margin-top:8px">Todos los productos son elaborados a mano con materiales de calidad 🧶</p>
 </footer>
 
+<script>
+  CONFIG.applyTheme();
+  document.getElementById('footerTagline').textContent = CONFIG.store.tagline;
+</script>
 </body>
 </html>
