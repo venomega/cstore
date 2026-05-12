@@ -1,82 +1,4 @@
-const products = [
-  {
-    id: 1,
-    name: 'Suéter Andino',
-    desc: 'Lana merino, patrón geométrico andino. Abrigo perfecto para días fríos.',
-    price: 85000,
-    badge: 'Popular',
-    badgeType: 'hot',
-    color: '#C4704A',
-    pattern: 'sweater'
-  },
-  {
-    id: 2,
-    name: 'Gorro Bohemio',
-    desc: 'Gorro tejido a crochet con pompón de lana, estilo libre y cálido.',
-    price: 28000,
-    badge: 'Nuevo',
-    badgeType: '',
-    color: '#7A9E7E',
-    pattern: 'hat'
-  },
-  {
-    id: 3,
-    name: 'Bufanda Infinity',
-    desc: 'Bufanda circular suave al tacto. Tela gruesa, perfecta para el invierno.',
-    price: 42000,
-    badge: null,
-    color: '#C9977A',
-    pattern: 'scarf'
-  },
-  {
-    id: 4,
-    name: 'Cobija de Apego',
-    desc: 'Tejida en punto espigas con lana gruesa. 100x80cm, lista para personalizar.',
-    price: 130000,
-    badge: 'Bestseller',
-    badgeType: 'hot',
-    color: '#A0522D',
-    pattern: 'blanket'
-  },
-  {
-    id: 5,
-    name: 'Bolso Macramé',
-    desc: 'Bolso tejido a mano en macramé. Resistente, versátil y muy original.',
-    price: 55000,
-    badge: 'Nuevo',
-    badgeType: '',
-    color: '#B8860B',
-    pattern: 'bag'
-  },
-  {
-    id: 6,
-    name: 'Medias Gruesas',
-    desc: 'Medias artesanales hasta la rodilla. Lana suave con diseño nórdico.',
-    price: 32000,
-    badge: null,
-    color: '#6B5B8E',
-    pattern: 'socks'
-  },
-  {
-    id: 7,
-    name: 'Chaleco Tejido',
-    desc: 'Chaleco sin mangas con textura trenzada. Unisex, tallas S a XL.',
-    price: 72000,
-    badge: 'Popular',
-    badgeType: 'hot',
-    color: '#8B4513',
-    pattern: 'vest'
-  },
-  {
-    id: 8,
-    name: 'Cojín Decorativo',
-    desc: 'Cubierta tejida en punto nudo. Para cojín 40x40cm. Varios colores.',
-    price: 38000,
-    badge: null,
-    color: '#CD853F',
-    pattern: 'cushion'
-  }
-];
+let products = [];
 
 let cart = [];
 
@@ -149,13 +71,20 @@ function fmt(n) {
   return CONFIG.currency.symbol + n.toLocaleString(CONFIG.currency.locale);
 }
 
+function getProductImage(product) {
+  if (product.image) {
+    return `<img src="${product.image}" alt="${product.name}" loading="lazy">`;
+  }
+  return getProductSVG(product);
+}
+
 function renderProducts() {
   const grid = document.getElementById('productsGrid');
   grid.innerHTML = products.map(p => `
     <div class="product-card">
       <div class="product-img">
         ${p.badge ? `<span class="badge ${p.badgeType}">${p.badge}</span>` : ''}
-        ${getProductSVG(p)}
+        ${getProductImage(p)}
       </div>
       <div class="product-info">
         <h3>${p.name}</h3>
@@ -226,7 +155,7 @@ function updateCartUI() {
   } else {
     container.innerHTML = cart.map(item => `
       <div class="cart-item">
-        <div class="cart-item-img">${getProductSVG(item)}</div>
+        <div class="cart-item-img">${getProductImage(item)}</div>
         <div>
           <div class="cart-item-name">${item.name}</div>
           <div class="cart-item-price">${fmt(item.price)}</div>
@@ -298,6 +227,33 @@ function scrollToProducts() {
   document.getElementById('productos').scrollIntoView({ behavior: 'smooth' });
 }
 
-CONFIG.applyTheme();
-renderProducts();
-updateCartUI();
+const FALLBACK_PRODUCTS = [
+  {id:1,name:'Suéter Andino',desc:'Lana merino, patrón geométrico andino. Abrigo perfecto para días fríos.',price:85000,badge:'Popular',badgeType:'hot',color:'#C4704A',pattern:'sweater'},
+  {id:2,name:'Gorro Bohemio',desc:'Gorro tejido a crochet con pompón de lana, estilo libre y cálido.',price:28000,badge:'Nuevo',badgeType:'',color:'#7A9E7E',pattern:'hat'},
+  {id:3,name:'Bufanda Infinity',desc:'Bufanda circular suave al tacto. Tela gruesa, perfecta para el invierno.',price:42000,badge:null,color:'#C9977A',pattern:'scarf'},
+  {id:4,name:'Cobija de Apego',desc:'Tejida en punto espigas con lana gruesa. 100x80cm, lista para personalizar.',price:130000,badge:'Bestseller',badgeType:'hot',color:'#A0522D',pattern:'blanket'},
+  {id:5,name:'Bolso Macramé',desc:'Bolso tejido a mano en macramé. Resistente, versátil y muy original.',price:55000,badge:'Nuevo',badgeType:'',color:'#B8860B',pattern:'bag'},
+  {id:6,name:'Medias Gruesas',desc:'Medias artesanales hasta la rodilla. Lana suave con diseño nórdico.',price:32000,badge:null,color:'#6B5B8E',pattern:'socks'},
+  {id:7,name:'Chaleco Tejido',desc:'Chaleco sin mangas con textura trenzada. Unisex, tallas S a XL.',price:72000,badge:'Popular',badgeType:'hot',color:'#8B4513',pattern:'vest'},
+  {id:8,name:'Cojín Decorativo',desc:'Cubierta tejida en punto nudo. Para cojín 40x40cm. Varios colores.',price:38000,badge:null,color:'#CD853F',pattern:'cushion'},
+];
+
+async function loadProducts() {
+  try {
+    const manifest = await fetch('productos/lista.json').then(r => r.json());
+    products = await Promise.all(manifest.map(async file => {
+      const text = await fetch('productos/' + file).then(r => r.text());
+      return jsyaml.load(text);
+    }));
+  } catch (e) {
+    console.warn('Fallback a datos embebidos (fetch no disponible con file://)');
+    products = FALLBACK_PRODUCTS;
+  }
+}
+
+(async () => {
+  await loadProducts();
+  CONFIG.applyTheme();
+  renderProducts();
+  updateCartUI();
+})();

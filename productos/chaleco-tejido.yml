@@ -1,0 +1,8 @@
+id: 7
+name: "Chaleco Tejido"
+desc: "Chaleco sin mangas con textura trenzada. Unisex, tallas S a XL."
+price: 72000
+badge: "Popular"
+badgeType: "hot"
+color: "#8B4513"
+pattern: "vest"

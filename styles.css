@@ -240,6 +240,12 @@ nav a:hover { color: var(--sienna); }
   overflow: hidden;
 }
 
+.product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .badge {
   position: absolute;
   top: 12px;
@@ -415,6 +421,12 @@ nav a:hover { color: var(--sienna); }
   align-items: center;
   justify-content: center;
   overflow: hidden;
+}
+
+.cart-item-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .cart-item-name {
