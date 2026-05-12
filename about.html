@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Madeja — Sobre Nosotros</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .about-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 80px 40px;
+  }
+
+  .about-section h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--charcoal);
+    margin-bottom: 12px;
+  }
+
+  .about-section .subtitle {
+    color: var(--muted);
+    font-size: 1rem;
+    margin-bottom: 48px;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .about-card {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 32px;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+
+  .about-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px var(--shadow);
+  }
+
+  .about-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--sienna);
+    margin-bottom: 12px;
+  }
+
+  .about-card p {
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+
+  .about-card .icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .story {
+    margin-top: 60px;
+    padding: 40px;
+    background: var(--cream);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+  }
+
+  .story h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--charcoal);
+    margin-bottom: 16px;
+  }
+
+  .story p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: 12px;
+  }
+
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .about-section { padding: 40px 20px; }
+    .story { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <svg class="logo-knot" viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="20" r="18" stroke="#A0522D" stroke-width="2.5" fill="none"/>
+      <path d="M12 20 Q20 8 28 20 Q20 32 12 20Z" stroke="#A0522D" stroke-width="2" fill="#C4704A" fill-opacity="0.3"/>
+      <circle cx="20" cy="20" r="3" fill="#A0522D"/>
+    </svg>
+    <a href="index.html" style="text-decoration:none;color:inherit;">La Madeja</a>
+  </div>
+
+  <nav>
+    <a href="index.html#productos">Colección</a>
+    <a href="about.html">Sobre nosotros</a>
+    <a href="contacto.html">Contacto</a>
+  </nav>
+</header>
+
+<section class="about-section">
+  <h1>Sobre Nosotros</h1>
+  <p class="subtitle">Conoce la historia y el corazón detrás de cada tejido</p>
+
+  <div class="about-grid">
+    <div class="about-card">
+      <span class="icon">🧶</span>
+      <h3>Hecho a Mano</h3>
+      <p>Cada pieza es tejida una por una con técnicas tradicionales. No hay dos iguales, porque cada una lleva una historia distinta.</p>
+    </div>
+    <div class="about-card">
+      <span class="icon">🌿</span>
+      <h3>Materiales Naturales</h3>
+      <p>Trabajamos con lanas merino, alpaca y algodón orgánico. Seleccionamos cada material por su calidad y suavidad.</p>
+    </div>
+    <div class="about-card">
+      <span class="icon">🤝</span>
+      <h3>Comercio Justo</h3>
+      <p>Apoyamos a tejedoras locales, pagando un precio justo por su trabajo y preservando el arte textil tradicional.</p>
+    </div>
+    <div class="about-card">
+      <span class="icon">📦</span>
+      <h3>Empaque Sostenible</h3>
+      <p>Todos nuestros envíos usan materiales reciclados y biodegradables. Cuidamos el planeta tanto como nuestros tejidos.</p>
+    </div>
+  </div>
+
+  <div class="story">
+    <h2>Nuestra Historia</h2>
+    <p>La Madeja nació en 2020 de la pasión por los tejidos artesanales y el deseo de mantener vivas las técnicas tradicionales. Lo que empezó como un pequeño proyecto entre dos amigas tejiendo en las tardes, pronto se convirtió en una tienda que conecta a artesanas con personas que valoran lo hecho a mano.</p>
+    <p>Cada prenda que llega a tus manos ha pasado por horas de dedicación: desde la selección del hilo hasta el último punto. Creemos en la moda lenta, en piezas que duran años y en el poder de un tejido hecho con amor.</p>
+    <p>Hoy trabajamos con una red de 12 tejedoras en Guatemala, todas mujeres que mantienen vivo el oficio. Cada compra en La Madeja no solo te da un producto único, sino que apoya a una comunidad entera.</p>
+  </div>
+</section>
+
+<footer>
+  <p><strong>La Madeja</strong> — Tejidos Artesanales</p>
+  <p style="margin-top:8px">Todos los productos son elaborados a mano con materiales de calidad 🧶</p>
+</footer>
+
+</body>
+</html>
