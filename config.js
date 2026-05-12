@@ -20,7 +20,7 @@ const CONFIG = {
     number: '5358436249',
   },
   store: {
-    name: 'Dinknit',
+    name: 'DinKnit',
     tagline: 'Tejidos Artesanales',
     email: 'hola@lamadeja.com',
     location: 'La Habana, Cuba',
@@ -29,7 +29,7 @@ const CONFIG = {
       saturday: '10:00 – 14:00',
     },
     social: {
-      facebook: '#',
+      facebook: 'https://www.facebook.com/profile.php?id=61579900713393',
       instagram: 'https://www.instagram.com/dinknit.crochet',
     },
   },
