@@ -1,6 +1,6 @@
 const CONFIG = {
   currency: {
-    symbol: '$',
+    symbol: '',
     code: 'CUP',
     locale: 'es-CU',
   },
@@ -17,20 +17,20 @@ const CONFIG = {
     '--shadow': 'rgba(44,44,44,0.12)',
   },
   whatsapp: {
-    number: '50212345678',
+    number: '5358436249',
   },
   store: {
-    name: 'La Madeja',
+    name: 'Dinknit',
     tagline: 'Tejidos Artesanales',
     email: 'hola@lamadeja.com',
-    location: 'Ciudad de Guatemala, Guatemala',
+    location: 'La Habana, Cuba',
     hours: {
       weekdays: '9:00 – 18:00',
       saturday: '10:00 – 14:00',
     },
     social: {
       facebook: '#',
-      instagram: '#',
+      instagram: 'https://www.instagram.com/dinknit.crochet',
     },
   },
 };
