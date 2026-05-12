@@ -4,6 +4,16 @@ const CONFIG = {
     code: 'CUP',
     locale: 'es-CU',
   },
+  logo: {
+    type: 'svg',
+    svg: `<svg class="logo-knot" viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="20" r="18" stroke="#A0522D" stroke-width="2.5" fill="none"/>
+      <path d="M12 20 Q20 8 28 20 Q20 32 12 20Z" stroke="#A0522D" stroke-width="2" fill="#C4704A" fill-opacity="0.3"/>
+      <circle cx="20" cy="20" r="3" fill="#A0522D"/>
+    </svg>`,
+    img: '',
+    alt: 'Logo',
+  },
   theme: {
     '--cream': '#F5EFE6',
     '--warm-white': '#FAF7F2',
@@ -40,4 +50,14 @@ CONFIG.applyTheme = function () {
   Object.entries(this.theme).forEach(([key, val]) => {
     root.style.setProperty(key, val);
   });
+};
+
+CONFIG.applyLogo = function (containerId) {
+  const container = document.getElementById(containerId || 'logoIcon');
+  if (!container) return;
+  if (this.logo.type === 'image' && this.logo.img) {
+    container.innerHTML = `<img src="${this.logo.img}" alt="${this.logo.alt}" class="logo-knot">`;
+  } else {
+    container.innerHTML = this.logo.svg;
+  }
 };
