@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Madeja — Tienda de Tejidos Artesanales</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5EFE6;
+    --warm-white: #FAF7F2;
+    --sienna: #A0522D;
+    --terracotta: #C4704A;
+    --dusty-rose: #C9977A;
+    --sage: #7A9E7E;
+    --charcoal: #2C2C2C;
+    --muted: #8C7B6E;
+    --border: #DDD3C8;
+    --shadow: rgba(44,44,44,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--warm-white);
+    color: var(--charcoal);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    backdrop-filter: blur(12px);
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    color: var(--sienna);
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-knot {
+    width: 32px;
+    height: 32px;
+  }
+
+  nav {
+    display: flex;
+    gap: 32px;
+  }
+
+  nav a {
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+
+  nav a:hover { color: var(--sienna); }
+
+  .cart-btn {
+    position: relative;
+    background: var(--sienna);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.88rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .cart-btn:hover { background: var(--terracotta); transform: translateY(-1px); }
+
+  .cart-count {
+    background: white;
+    color: var(--sienna);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    transition: transform 0.2s;
+  }
+
+  .cart-count.bump { animation: bump 0.3s ease; }
+  @keyframes bump { 0%,100%{transform:scale(1)} 50%{transform:scale(1.4)} }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    padding: 90px 40px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .hero-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1.15;
+    color: var(--charcoal);
+    margin-bottom: 20px;
+  }
+
+  .hero-text h1 em {
+    color: var(--terracotta);
+    font-style: italic;
+  }
+
+  .hero-text p {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 380px;
+    margin-bottom: 32px;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    background: var(--charcoal);
+    color: white;
+    padding: 14px 32px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .hero-cta:hover { background: var(--sienna); }
+
+  .hero-visual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .hero-card {
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+    position: relative;
+  }
+
+  .hero-card:first-child { margin-top: 40px; }
+  .hero-card:last-child { margin-top: -40px; }
+
+  .hero-card svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ── SECTION TITLE ── */
+  .section-header {
+    text-align: center;
+    padding: 60px 40px 40px;
+  }
+
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--charcoal);
+    margin-bottom: 10px;
+  }
+
+  .section-header p {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  /* ── PRODUCTS ── */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+    padding: 0 40px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .product-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: transform 0.25s, box-shadow 0.25s;
+    cursor: default;
+  }
+
+  .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px var(--shadow);
+  }
+
+  .product-img {
+    width: 100%;
+    aspect-ratio: 1;
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--sage);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 50px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .badge.hot { background: var(--terracotta); }
+
+  .product-info {
+    padding: 20px;
+  }
+
+  .product-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    margin-bottom: 4px;
+    color: var(--charcoal);
+  }
+
+  .product-info .desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+
+  .product-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .price {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--sienna);
+  }
+
+  .price span {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-weight: 300;
+    margin-right: 2px;
+  }
+
+  .add-btn {
+    background: var(--cream);
+    border: 1.5px solid var(--border);
+    color: var(--charcoal);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  }
+
+  .add-btn:hover {
+    background: var(--sienna);
+    border-color: var(--sienna);
+    color: white;
+    transform: scale(1.1);
+  }
+
+  /* ── CART DRAWER ── */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .overlay.open { opacity: 1; pointer-events: all; }
+
+  .cart-drawer {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: min(420px, 100vw);
+    background: var(--warm-white);
+    z-index: 201;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    box-shadow: -20px 0 60px rgba(0,0,0,0.12);
+  }
+
+  .cart-drawer.open { transform: translateX(0); }
+
+  .drawer-header {
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .drawer-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--charcoal);
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 1.5rem;
+    line-height: 1;
+    padding: 4px;
+    transition: color 0.2s;
+  }
+
+  .close-btn:hover { color: var(--charcoal); }
+
+  .drawer-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 28px;
+  }
+
+  .empty-cart {
+    text-align: center;
+    padding: 60px 0;
+    color: var(--muted);
+  }
+
+  .empty-cart svg {
+    margin-bottom: 16px;
+    opacity: 0.4;
+  }
+
+  .empty-cart p {
+    font-size: 0.9rem;
+  }
+
+  .cart-item {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    gap: 14px;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    animation: slideIn 0.25s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity:0; transform:translateX(16px); }
+    to { opacity:1; transform:translateX(0); }
+  }
+
+  .cart-item-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 10px;
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .cart-item-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+
+  .cart-item-price {
+    font-size: 0.85rem;
+    color: var(--sienna);
+    font-weight: 500;
+  }
+
+  .qty-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .qty-btn {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+  }
+
+  .qty-btn:hover { background: var(--border); }
+
+  .qty-num {
+    font-size: 0.9rem;
+    font-weight: 500;
+    min-width: 16px;
+    text-align: center;
+  }
+
+  .remove-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s;
+    font-size: 1rem;
+    align-self: flex-start;
+  }
+
+  .remove-btn:hover { color: #C0392B; }
+
+  .drawer-footer {
+    padding: 24px 28px;
+    border-top: 1px solid var(--border);
+    background: white;
+  }
+
+  .subtotal-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin-bottom: 20px;
+  }
+
+  .total-row .amount { color: var(--sienna); }
+
+  .whatsapp-btn {
+    width: 100%;
+    background: #25D366;
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.2s, transform 0.15s;
+    text-decoration: none;
+  }
+
+  .whatsapp-btn:hover { background: #1ebe5b; transform: translateY(-2px); }
+  .whatsapp-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--charcoal);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 40px;
+    font-size: 0.82rem;
+  }
+
+  footer strong { color: white; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--charcoal);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 0.88rem;
+    z-index: 999;
+    transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+    white-space: nowrap;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 768px) {
+    header { padding: 0 20px; }
+    nav { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 40px 20px; }
+    .hero-visual { display: none; }
+    .products-grid { padding: 0 20px 60px; }
+    .section-header { padding: 40px 20px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <svg class="logo-knot" viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="20" r="18" stroke="#A0522D" stroke-width="2.5" fill="none"/>
+      <path d="M12 20 Q20 8 28 20 Q20 32 12 20Z" stroke="#A0522D" stroke-width="2" fill="#C4704A" fill-opacity="0.3"/>
+      <circle cx="20" cy="20" r="3" fill="#A0522D"/>
+    </svg>
+    La Madeja
+  </div>
+
+  <nav>
+    <a onclick="scrollToProducts()">Colección</a>
+    <a>Sobre nosotros</a>
+    <a>Contacto</a>
+  </nav>
+
+  <button class="cart-btn" onclick="openCart()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <path d="M16 10a4 4 0 01-8 0"/>
+    </svg>
+    Carrito
+    <span class="cart-count" id="cartCount">0</span>
+  </button>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>Tejidos hechos<br>con <em>amor</em> y<br>hilo de calidad</h1>
+    <p>Cada pieza es única, elaborada a mano con lanas naturales y diseños originales. Cálidos, suaves y llenos de historia.</p>
+    <div class="hero-cta" onclick="scrollToProducts()">Ver colección →</div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card">
+      <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="280" fill="#E8DDD0"/>
+        <g opacity="0.6">
+          <path d="M0 40 Q50 20 100 40 Q150 60 200 40" stroke="#C4704A" stroke-width="3" fill="none"/>
+          <path d="M0 60 Q50 40 100 60 Q150 80 200 60" stroke="#A0522D" stroke-width="2.5" fill="none"/>
+          <path d="M0 80 Q50 60 100 80 Q150 100 200 80" stroke="#C9977A" stroke-width="3" fill="none"/>
+          <path d="M0 100 Q50 80 100 100 Q150 120 200 100" stroke="#C4704A" stroke-width="2" fill="none"/>
+          <path d="M0 120 Q50 100 100 120 Q150 140 200 120" stroke="#7A9E7E" stroke-width="3" fill="none"/>
+          <path d="M0 140 Q50 120 100 140 Q150 160 200 140" stroke="#A0522D" stroke-width="2.5" fill="none"/>
+          <path d="M0 160 Q50 140 100 160 Q150 180 200 160" stroke="#C9977A" stroke-width="3" fill="none"/>
+          <path d="M0 180 Q50 160 100 180 Q150 200 200 180" stroke="#C4704A" stroke-width="2" fill="none"/>
+          <path d="M0 200 Q50 180 100 200 Q150 220 200 200" stroke="#7A9E7E" stroke-width="3" fill="none"/>
+          <path d="M0 220 Q50 200 100 220 Q150 240 200 220" stroke="#A0522D" stroke-width="2.5" fill="none"/>
+        </g>
+        <text x="100" y="265" font-family="serif" font-size="11" fill="#8C7B6E" text-anchor="middle">Hecho a mano ✦</text>
+      </svg>
+    </div>
+    <div class="hero-card">
+      <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="280" fill="#EDE4DA"/>
+        <g>
+          <rect x="20" y="20" width="160" height="240" rx="8" fill="none" stroke="#C4704A" stroke-width="1.5" stroke-dasharray="6,4"/>
+          <!-- Diamond pattern -->
+          <path d="M100 40 L140 80 L100 120 L60 80 Z" fill="#C4704A" fill-opacity="0.3" stroke="#C4704A" stroke-width="1.5"/>
+          <path d="M100 80 L140 120 L100 160 L60 120 Z" fill="#7A9E7E" fill-opacity="0.3" stroke="#7A9E7E" stroke-width="1.5"/>
+          <path d="M100 120 L140 160 L100 200 L60 160 Z" fill="#C9977A" fill-opacity="0.3" stroke="#C9977A" stroke-width="1.5"/>
+          <!-- Dots -->
+          <circle cx="100" cy="80" r="4" fill="#A0522D"/>
+          <circle cx="100" cy="120" r="4" fill="#7A9E7E"/>
+          <circle cx="60" cy="80" r="3" fill="#C9977A"/>
+          <circle cx="140" cy="80" r="3" fill="#C9977A"/>
+          <circle cx="60" cy="120" r="3" fill="#A0522D"/>
+          <circle cx="140" cy="120" r="3" fill="#A0522D"/>
+        </g>
+        <text x="100" y="255" font-family="serif" font-size="11" fill="#8C7B6E" text-anchor="middle">Diseño exclusivo ✦</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<div class="section-header" id="productos">
+  <h2>Nuestra Colección</h2>
+  <p>Cada pieza tejida con amor, lista para abrigarte</p>
+</div>
+
+<div class="products-grid" id="productsGrid"></div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>La Madeja</strong> — Tejidos Artesanales</p>
+  <p style="margin-top:8px">Todos los productos son elaborados a mano con materiales de calidad 🧶</p>
+</footer>
+
+<!-- CART OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<!-- CART DRAWER -->
+<div class="cart-drawer" id="cartDrawer">
+  <div class="drawer-header">
+    <h2>Tu carrito 🧶</h2>
+    <button class="close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div class="drawer-items" id="drawerItems"></div>
+  <div class="drawer-footer">
+    <div class="subtotal-row">
+      <span>Productos (<span id="itemCount">0</span>)</span>
+      <span id="subtotalAmt">$0</span>
+    </div>
+    <div class="total-row">
+      <span>Total</span>
+      <span class="amount" id="totalAmt">$0</span>
+    </div>
+    <a class="whatsapp-btn" id="waBtn" href="#" target="_blank">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      Pedir por WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── CONFIG ──
+  const WHATSAPP_NUMBER = '50212345678'; // ← Cambia esto por tu número (con código de país, sin +)
+
+  // ── PRODUCTOS ──
+  const products = [
+    {
+      id: 1,
+      name: 'Suéter Andino',
+      desc: 'Lana merino, patrón geométrico andino. Abrigo perfecto para días fríos.',
+      price: 85000,
+      badge: 'Popular',
+      badgeType: 'hot',
+      color: '#C4704A',
+      pattern: 'sweater'
+    },
+    {
+      id: 2,
+      name: 'Gorro Bohemio',
+      desc: 'Gorro tejido a crochet con pompón de lana, estilo libre y cálido.',
+      price: 28000,
+      badge: 'Nuevo',
+      badgeType: '',
+      color: '#7A9E7E',
+      pattern: 'hat'
+    },
+    {
+      id: 3,
+      name: 'Bufanda Infinity',
+      desc: 'Bufanda circular suave al tacto. Tela gruesa, perfecta para el invierno.',
+      price: 42000,
+      badge: null,
+      color: '#C9977A',
+      pattern: 'scarf'
+    },
+    {
+      id: 4,
+      name: 'Cobija de Apego',
+      desc: 'Tejida en punto espigas con lana gruesa. 100x80cm, lista para personalizar.',
+      price: 130000,
+      badge: 'Bestseller',
+      badgeType: 'hot',
+      color: '#A0522D',
+      pattern: 'blanket'
+    },
+    {
+      id: 5,
+      name: 'Bolso Macramé',
+      desc: 'Bolso tejido a mano en macramé. Resistente, versátil y muy original.',
+      price: 55000,
+      badge: 'Nuevo',
+      badgeType: '',
+      color: '#B8860B',
+      pattern: 'bag'
+    },
+    {
+      id: 6,
+      name: 'Medias Gruesas',
+      desc: 'Medias artesanales hasta la rodilla. Lana suave con diseño nórdico.',
+      price: 32000,
+      badge: null,
+      color: '#6B5B8E',
+      pattern: 'socks'
+    },
+    {
+      id: 7,
+      name: 'Chaleco Tejido',
+      desc: 'Chaleco sin mangas con textura trenzada. Unisex, tallas S a XL.',
+      price: 72000,
+      badge: 'Popular',
+      badgeType: 'hot',
+      color: '#8B4513',
+      pattern: 'vest'
+    },
+    {
+      id: 8,
+      name: 'Cojín Decorativo',
+      desc: 'Cubierta tejida en punto nudo. Para cojín 40x40cm. Varios colores.',
+      price: 38000,
+      badge: null,
+      color: '#CD853F',
+      pattern: 'cushion'
+    }
+  ];
+
+  // ── CART STATE ──
+  let cart = [];
+
+  // ── PRODUCT ILLUSTRATIONS ──
+  function getProductSVG(product) {
+    const c = product.color;
+    const patterns = {
+      sweater: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+        <path d="M30 20 L10 50 L30 55 L30 100 L90 100 L90 55 L110 50 L90 20 L75 30 Q60 40 45 30 Z" fill="${c}" fill-opacity="0.3" stroke="${c}" stroke-width="2"/>
+        <path d="M45 30 Q60 45 75 30" fill="none" stroke="${c}" stroke-width="2.5"/>
+        <line x1="30" y1="65" x2="90" y2="65" stroke="${c}" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="30" y1="75" x2="90" y2="75" stroke="${c}" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="30" y1="85" x2="90" y2="85" stroke="${c}" stroke-width="1.5" stroke-dasharray="4,3"/>
+      </svg>`,
+      hat: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+        <ellipse cx="60" cy="90" rx="40" ry="10" fill="${c}" fill-opacity="0.5" stroke="${c}" stroke-width="2"/>
+        <path d="M20 90 Q20 30 60 20 Q100 30 100 90" fill="${c}" fill-opacity="0.3" stroke="${c}" stroke-width="2"/>
+        <path d="M25 75 Q60 65 95 75" stroke="${c}" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+        <path d="M22 62 Q60 50 98 62" stroke="${c}" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+        <circle cx="60" cy="20" r="10" fill="${c}"/>
+      </svg>`,
+      scarf: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+        <ellipse cx="60" cy="60" rx="38" ry="28" fill="${c}" fill-opacity="0.25" stroke="${c}" stroke-width="2.5"/>
+        <ellipse cx="60" cy="60" rx="28" ry="18" fill="${c}" fill-opacity="0.2" stroke="${c}" stroke-width="1.5"/>
+        <path d="M22 60 Q30 45 38 60 Q46 75 54 60" stroke="${c}" stroke-width="2.5" fill="none"/>
+        <path d="M66 60 Q74 45 82 60 Q90 75 98 60" stroke="${c}" stroke-width="2.5" fill="none"/>
+      </svg>`,
+      blanket: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+        <rect x="10" y="10" width="100" height="100" rx="6" fill="${c}" fill-opacity="0.2" stroke="${c}" stroke-width="2"/>
+        <path d="M10 30 L30 10 M10 50 L50 10 M10 70 L70 10 M10 90 L90 10 M10 110 L110 10 M30 110 L110 30 M50 110 L110 50 M70 110 L110 70 M90 110 L110 90" stroke="${c}" stroke-width="1" opacity="0.5"/>
+        <rect x="20" y="20" width="80" height="80" rx="4" fill="none" stroke="${c}" stroke-width="1.5" stroke-dasharray="5,3"/>
+      </svg>`,
+      bag: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+        <path d="M35 40 Q35 25 60 25 Q85 25 85 40" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round"/>
+        <rect x="20" y="40" width="80" height="70" rx="8" fill="${c}" fill-opacity="0.25" stroke="${c}" stroke-width="2"/>
+        <line x1="20" y1="60" x2="100" y2="60" stroke="${c}" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="20" y1="75" x2="100" y2="75" stroke="${c}" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="20" y1="90" x2="100" y2="90" stroke="${c}" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <circle cx="60" cy="50" r="5" fill="${c}" fill-opacity="0.5"/>
+      </svg>`,
+      socks: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+        <path d="M45 10 L45 70 Q45 110 80 110 Q100 110 100 90 Q100 75 85 75 L75 75 L75 10 Z" fill="${c}" fill-opacity="0.3" stroke="${c}" stroke-width="2"/>
+        <line x1="45" y1="25" x2="75" y2="25" stroke="${c}" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="45" y1="38" x2="75" y2="38" stroke="${c}" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="45" y1="51" x2="75" y2="51" stroke="${c}" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <path d="M45 10 Q60 5 75 10" stroke="${c}" stroke-width="2.5" fill="none"/>
+      </svg>`,
+      vest: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+        <path d="M20 20 L20 110 L55 110 L55 55 L65 55 L65 110 L100 110 L100 20 L80 30 Q60 45 40 30 Z" fill="${c}" fill-opacity="0.3" stroke="${c}" stroke-width="2"/>
+        <path d="M40 30 Q60 50 80 30" fill="none" stroke="${c}" stroke-width="2"/>
+        <line x1="55" y1="20" x2="65" y2="20" stroke="${c}" stroke-width="2"/>
+        <circle cx="60" cy="65" r="3" fill="${c}" fill-opacity="0.7"/>
+        <circle cx="60" cy="80" r="3" fill="${c}" fill-opacity="0.7"/>
+        <circle cx="60" cy="95" r="3" fill="${c}" fill-opacity="0.7"/>
+      </svg>`,
+      cushion: `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+        <rect x="10" y="20" width="100" height="80" rx="12" fill="${c}" fill-opacity="0.3" stroke="${c}" stroke-width="2.5"/>
+        <path d="M10 60 Q60 40 110 60 Q60 80 10 60" fill="${c}" fill-opacity="0.2" stroke="${c}" stroke-width="1.5"/>
+        <circle cx="60" cy="60" r="15" fill="${c}" fill-opacity="0.2" stroke="${c}" stroke-width="1.5"/>
+        <circle cx="60" cy="60" r="5" fill="${c}" fill-opacity="0.6"/>
+        <circle cx="20" cy="30" r="4" fill="${c}" fill-opacity="0.5"/>
+        <circle cx="100" cy="30" r="4" fill="${c}" fill-opacity="0.5"/>
+        <circle cx="20" cy="90" r="4" fill="${c}" fill-opacity="0.5"/>
+        <circle cx="100" cy="90" r="4" fill="${c}" fill-opacity="0.5"/>
+      </svg>`
+    };
+    return patterns[product.pattern] || patterns.sweater;
+  }
+
+  // ── FORMAT PRICE ──
+  function fmt(n) {
+    return '$' + n.toLocaleString('es-CO');
+  }
+
+  // ── RENDER PRODUCTS ──
+  function renderProducts() {
+    const grid = document.getElementById('productsGrid');
+    grid.innerHTML = products.map(p => `
+      <div class="product-card">
+        <div class="product-img">
+          ${p.badge ? `<span class="badge ${p.badgeType}">${p.badge}</span>` : ''}
+          ${getProductSVG(p)}
+        </div>
+        <div class="product-info">
+          <h3>${p.name}</h3>
+          <p class="desc">${p.desc}</p>
+          <div class="product-footer">
+            <div class="price"><span>COP</span>${fmt(p.price)}</div>
+            <button class="add-btn" onclick="addToCart(${p.id})" title="Agregar al carrito">+</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ── CART LOGIC ──
+  function addToCart(id) {
+    const product = products.find(p => p.id === id);
+    const existing = cart.find(i => i.id === id);
+    if (existing) {
+      existing.qty++;
+    } else {
+      cart.push({ ...product, qty: 1 });
+    }
+    updateCartUI();
+    showToast(`✓ ${product.name} agregado`);
+    bumpCount();
+  }
+
+  function removeFromCart(id) {
+    cart = cart.filter(i => i.id !== id);
+    updateCartUI();
+  }
+
+  function changeQty(id, delta) {
+    const item = cart.find(i => i.id === id);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) removeFromCart(id);
+    else updateCartUI();
+  }
+
+  function getTotal() {
+    return cart.reduce((s, i) => s + i.price * i.qty, 0);
+  }
+
+  function getTotalItems() {
+    return cart.reduce((s, i) => s + i.qty, 0);
+  }
+
+  function updateCartUI() {
+    // Count badge
+    const count = getTotalItems();
+    document.getElementById('cartCount').textContent = count;
+
+    // Item count text
+    document.getElementById('itemCount').textContent = count;
+
+    // Totals
+    const total = getTotal();
+    document.getElementById('subtotalAmt').textContent = fmt(total);
+    document.getElementById('totalAmt').textContent = fmt(total);
+
+    // Items list
+    const container = document.getElementById('drawerItems');
+    if (cart.length === 0) {
+      container.innerHTML = `
+        <div class="empty-cart">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#8C7B6E" stroke-width="1.5">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          <p>Tu carrito está vacío</p>
+        </div>`;
+    } else {
+      container.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-img">${getProductSVG(item)}</div>
+          <div>
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">${fmt(item.price)}</div>
+            <div class="qty-control">
+              <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
+              <span class="qty-num">${item.qty}</span>
+              <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+            </div>
+          </div>
+          <button class="remove-btn" onclick="removeFromCart(${item.id})">✕</button>
+        </div>
+      `).join('');
+    }
+
+    // WhatsApp link
+    updateWhatsAppLink();
+  }
+
+  function updateWhatsAppLink() {
+    const btn = document.getElementById('waBtn');
+    if (cart.length === 0) {
+      btn.href = '#';
+      btn.style.pointerEvents = 'none';
+      btn.style.opacity = '0.5';
+      return;
+    }
+
+    btn.style.pointerEvents = 'auto';
+    btn.style.opacity = '1';
+
+    let msg = '¡Hola! Quiero hacer un pedido de *La Madeja* 🧶\n\n';
+    msg += '*📋 Mi pedido:*\n';
+    cart.forEach(item => {
+      msg += `• ${item.name} x${item.qty} — ${fmt(item.price * item.qty)}\n`;
+    });
+    msg += `\n*💰 Total: ${fmt(getTotal())}*\n`;
+    msg += '\n¿Podría confirmarme disponibilidad y forma de pago? ¡Gracias!';
+
+    const encoded = encodeURIComponent(msg);
+    btn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+  }
+
+  // ── DRAWER OPEN/CLOSE ──
+  function openCart() {
+    document.getElementById('cartDrawer').classList.add('open');
+    document.getElementById('overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCart() {
+    document.getElementById('cartDrawer').classList.remove('open');
+    document.getElementById('overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ── TOAST ──
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2400);
+  }
+
+  // ── COUNT BUMP ANIMATION ──
+  function bumpCount() {
+    const el = document.getElementById('cartCount');
+    el.classList.remove('bump');
+    void el.offsetWidth;
+    el.classList.add('bump');
+  }
+
+  // ── SCROLL TO PRODUCTS ──
+  function scrollToProducts() {
+    document.getElementById('productos').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ── INIT ──
+  renderProducts();
+  updateCartUI();
+</script>
+</body>
+</html>
