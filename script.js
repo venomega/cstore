@@ -211,7 +211,7 @@ function updateWhatsAppLink() {
   cart.forEach(item => {
     msg += `• ${item.name} x${item.qty} — ${fmt(item.price * item.qty)}\n`;
   });
-  msg += `\n*💰 Total: ${fmt(getTotal())}*\n`;
+  msg += `\n*💰 Total: ${fmt(getTotal())} ${CONFIG.currency.code}*\n`;
   msg += '\n¿Podría confirmarme disponibilidad y forma de pago? ¡Gracias!';
 
   const encoded = encodeURIComponent(msg);
