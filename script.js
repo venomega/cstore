@@ -98,6 +98,25 @@ function renderProducts() {
   `).join('');
 }
 
+function saveCart() {
+  const data = cart.map(i => ({ id: i.id, qty: i.qty }));
+  localStorage.setItem('lamadeja_cart', JSON.stringify(data));
+}
+
+function loadCart() {
+  try {
+    const raw = localStorage.getItem('lamadeja_cart');
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    cart = data.map(d => {
+      const p = products.find(pr => pr.id === d.id);
+      return p ? { ...p, qty: d.qty } : null;
+    }).filter(Boolean);
+  } catch (e) {
+    cart = [];
+  }
+}
+
 function addToCart(id) {
   const product = products.find(p => p.id === id);
   const existing = cart.find(i => i.id === id);
@@ -106,6 +125,7 @@ function addToCart(id) {
   } else {
     cart.push({ ...product, qty: 1 });
   }
+  saveCart();
   updateCartUI();
   showToast(`✓ ${product.name} agregado`);
   bumpCount();
@@ -113,6 +133,7 @@ function addToCart(id) {
 
 function removeFromCart(id) {
   cart = cart.filter(i => i.id !== id);
+  saveCart();
   updateCartUI();
 }
 
@@ -121,7 +142,7 @@ function changeQty(id, delta) {
   if (!item) return;
   item.qty += delta;
   if (item.qty <= 0) removeFromCart(id);
-  else updateCartUI();
+  else { saveCart(); updateCartUI(); }
 }
 
 function getTotal() {
@@ -253,6 +274,7 @@ async function loadProducts() {
 
 (async () => {
   await loadProducts();
+  loadCart();
   CONFIG.applyTheme();
   renderProducts();
   updateCartUI();
