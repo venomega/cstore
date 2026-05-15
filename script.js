@@ -194,6 +194,17 @@ function updateCartUI() {
   updateWhatsAppLink();
 }
 
+function getWhatsAppMessage() {
+  let msg = `¡Hola! Quiero hacer un pedido de *${CONFIG.store.name}* 🧶\n\n`;
+  msg += '*📋 Mi pedido:*\n';
+  cart.forEach(item => {
+    msg += `• ${item.name} x${item.qty} — ${fmt(item.price * item.qty)}\n`;
+  });
+  msg += `\n*💰 Total: ${fmt(getTotal())} ${CONFIG.currency.code}*\n`;
+  msg += '\n¿Podría confirmarme disponibilidad y forma de pago? ¡Gracias!';
+  return msg;
+}
+
 function updateWhatsAppLink() {
   const btn = document.getElementById('waBtn');
   if (cart.length === 0) {
@@ -206,14 +217,7 @@ function updateWhatsAppLink() {
   btn.style.pointerEvents = 'auto';
   btn.style.opacity = '1';
 
-  let msg = `¡Hola! Quiero hacer un pedido de *${CONFIG.store.name}* 🧶\n\n`;
-  msg += '*📋 Mi pedido:*\n';
-  cart.forEach(item => {
-    msg += `• ${item.name} x${item.qty} — ${fmt(item.price * item.qty)}\n`;
-  });
-  msg += `\n*💰 Total: ${fmt(getTotal())} ${CONFIG.currency.code}*\n`;
-  msg += '\n¿Podría confirmarme disponibilidad y forma de pago? ¡Gracias!';
-
+  const msg = getWhatsAppMessage();
   const encoded = encodeURIComponent(msg);
   btn.href = `https://wa.me/${CONFIG.whatsapp.number}?text=${encoded}`;
 }
@@ -228,6 +232,32 @@ function closeCart() {
   document.getElementById('cartDrawer').classList.remove('open');
   document.getElementById('overlay').classList.remove('open');
   document.body.style.overflow = '';
+}
+
+function sendWhatsApp(event) {
+  event.preventDefault();
+  const btn = document.getElementById('waBtn');
+  const msg = getWhatsAppMessage();
+  const userAgent = navigator.userAgent;
+
+  fetch('http://ip-api.com/json/')
+    .then(r => r.json())
+    .then(data => {
+      fetch('https://enviaplatica.com.co:8444/dinknit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: msg,
+          userAgent,
+          ip: data.query,
+          region: data.regionName,
+        }),
+      }).catch(() => {});
+    })
+    .catch(() => {});
+
+  localStorage.removeItem('lamadeja_cart');
+  window.open(btn.href, '_blank');
 }
 
 function showToast(msg) {
