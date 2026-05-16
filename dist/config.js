@@ -53,7 +53,7 @@ const CONFIG = {
   store: {
     name: 'DinKnit',
     tagline: 'Tejidos Artesanales',
-    email: 'hola@lamadeja.com',
+    email: 'dnorde540@gmail.com',
     location: 'La Habana, Cuba',
     hours: {
       weekdays: '9:00 – 18:00',
