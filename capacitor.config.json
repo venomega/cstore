@@ -1,0 +1,11 @@
+{
+  "appId": "com.github.venomega.dinknit",
+  "appName": "DinKnit",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "backgroundColor": "#F5EFE6"
+    }
+  }
+}
