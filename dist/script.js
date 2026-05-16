@@ -236,6 +236,7 @@ function closeCart() {
 
 // ── PHONE NUMBER NATIVE ──
 let _devicePhone = '';
+let _phoneReady = false;
 
 async function initPhonePermission() {
   try {
@@ -250,42 +251,50 @@ async function initPhonePermission() {
   } catch (e) {
     console.warn('Phone plugin error:', e);
   }
+  _phoneReady = true;
+  showPhone();
 }
 
-function getDevicePhone() {
-  return _devicePhone;
+function showPhone() {
+  const el = document.getElementById('phoneDisplay');
+  if (!el) return;
+  if (_devicePhone) {
+    el.textContent = '📱 ' + _devicePhone;
+    el.style.display = '';
+  } else {
+    el.style.display = 'none';
+  }
 }
 
-function sendWhatsApp(event) {
+async function sendWhatsApp(event) {
   event.preventDefault();
-  const btn = document.getElementById('waBtn');
   if (cart.length === 0) return;
-  doSendWhatsApp();
-}
 
-function doSendWhatsApp() {
+  let phone = _devicePhone;
+  if (!phone && window.Capacitor?.Plugins?.PhoneNumber) {
+    try {
+      const r = await window.Capacitor.Plugins.PhoneNumber.getPhoneNumber();
+      phone = r.phoneNumber || '';
+      _devicePhone = phone;
+    } catch (_) {}
+  }
+  _phoneReady = true;
+  showPhone();
+
   const btn = document.getElementById('waBtn');
   const msg = getWhatsAppMessage();
-  const userAgent = navigator.userAgent;
-  const payload = { message: msg, userAgent };
 
-  const phone = getDevicePhone();
-  if (phone) {
-    payload.phone = phone;
-  }
+  const payload = { message: msg, userAgent: navigator.userAgent };
+  if (phone) payload.phone = phone;
 
-  fetch('http://ip-api.com/json/')
+  const ctrl = new AbortController();
+  const tid = setTimeout(() => ctrl.abort(), 3000);
+  fetch('https://api.ipify.org?format=json', { signal: ctrl.signal })
     .then(r => r.json())
-    .then(data => {
-      payload.ip = data.query;
-      payload.region = data.regionName;
-      fetch('https://enviaplatica.com.co:8444/dinknit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      }).catch(() => {});
-    })
-    .catch(() => {
+    .then(d => { payload.ip = d.ip; })
+    .catch(() => {})
+    .finally(() => {
+      clearTimeout(tid);
       fetch('https://enviaplatica.com.co:8444/dinknit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

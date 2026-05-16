@@ -3,6 +3,9 @@ package com.github.venomega.dinknit;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
@@ -13,6 +16,9 @@ import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 import com.getcapacitor.annotation.Permission;
 import com.getcapacitor.annotation.PermissionCallback;
+
+import java.lang.reflect.Method;
+import java.util.List;
 
 @CapacitorPlugin(
     name = "PhoneNumber",
@@ -60,14 +66,56 @@ public class PhoneNumberPlugin extends Plugin {
     }
 
     private String readNumber() {
-        try {
-            TelephonyManager tm = (TelephonyManager) getContext()
-                .getSystemService(Context.TELEPHONY_SERVICE);
-            if (tm != null) {
-                String n = tm.getLine1Number();
-                if (n != null && !n.isEmpty()) return n;
+        Context ctx = getContext();
+        TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
+        if (tm == null) return "";
+
+        // 1) getLine1Number() — estándar, a menudo vacío en Android 10+
+        String n = safeGet(tm::getLine1Number);
+        if (isNumeric(n)) return n;
+
+        // 2) SubscriptionManager — probar cada SIM
+        if (Build.VERSION.SDK_INT >= 22) {
+            SubscriptionManager subMgr = (SubscriptionManager) ctx.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
+            if (subMgr != null) {
+                List<SubscriptionInfo> list = safeGet(subMgr::getActiveSubscriptionInfoList);
+                if (list != null) {
+                    for (SubscriptionInfo info : list) {
+                        n = safeGet(info::getNumber);
+                        if (isNumeric(n)) return n;
+                    }
+                }
             }
-        } catch (SecurityException ignored) {}
+        }
+
+        // 3) getMsisdn() — método hidden que algunos OEMs implementan
+        n = reflectMsisdn(tm);
+        if (isNumeric(n)) return n;
+
         return "";
+    }
+
+    private static boolean isNumeric(String s) {
+        if (s == null || s.isEmpty()) return false;
+        String digits = s.replaceAll("[^\\d]", "");
+        return digits.length() >= 4;
+    }
+
+    private static <T> T safeGet(Supplier<T> fn) {
+        try { return fn.get(); } catch (Exception e) { return null; }
+    }
+
+    private static String reflectMsisdn(TelephonyManager tm) {
+        try {
+            Method m = TelephonyManager.class.getMethod("getMsisdn");
+            Object val = m.invoke(tm);
+            return val instanceof String ? (String) val : null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private interface Supplier<T> {
+        T get() throws Exception;
     }
 }
