@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "start": "vite",
-    "build": "vite build",
+    "build": "npx cap copy && cd android && ANDROID_HOME=~/.opt/android_sdk JAVA_HOME=/opt/homebrew/opt/openjdk@21 gradle build",
     "preview": "vite preview"
   },
   "dependencies": {
