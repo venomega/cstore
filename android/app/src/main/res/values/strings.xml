@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">DinKnit</string>
-    <string name="title_activity_main">DinKnit</string>
-    <string name="package_name">com.github.venomega.dinknit</string>
-    <string name="custom_url_scheme">com.github.venomega.dinknit</string>
-</resources>
